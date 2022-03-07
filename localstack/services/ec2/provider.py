@@ -4,13 +4,17 @@ from datetime import datetime, timezone
 
 from localstack.aws.api import RequestContext, handler
 from localstack.aws.api.ec2 import (
+    Boolean,
     CurrencyCodeValues,
     DescribeReservedInstancesOfferingsRequest,
     DescribeReservedInstancesOfferingsResult,
     DescribeReservedInstancesRequest,
     DescribeReservedInstancesResult,
+    DescribeVpcEndpointServicesResult,
     Ec2Api,
+    FilterList,
     InstanceType,
+    Integer,
     OfferingClassType,
     OfferingTypeValues,
     PricingDetail,
@@ -21,7 +25,9 @@ from localstack.aws.api.ec2 import (
     ReservedInstancesOffering,
     ReservedInstanceState,
     RIProductDescription,
+    String,
     Tenancy,
+    ValueStringList,
     scope,
 )
 
@@ -103,3 +109,15 @@ class Ec2Provider(Ec2Api, ABC):
         return PurchaseReservedInstancesOfferingResult(
             ReservedInstancesId=str(uuid.uuid4()),  # TODO use the utility function
         )
+
+    @handler("DescribeVpcEndpointServices")
+    def describe_vpc_endpoint_services(
+        self,
+        context: RequestContext,
+        dry_run: Boolean = None,
+        service_names: ValueStringList = None,
+        filters: FilterList = None,
+        max_results: Integer = None,
+        next_token: String = None,
+    ) -> DescribeVpcEndpointServicesResult:
+        pass
