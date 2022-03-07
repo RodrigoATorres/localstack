@@ -5,7 +5,7 @@ import re
 import time
 from collections import defaultdict
 from io import BytesIO
-from typing import Any, Dict, List, Union
+from typing import Any, Dict, List, Union, Optional
 
 from flask import Response
 
@@ -271,3 +271,10 @@ def error_response(msg, code=500, error_type="InternalFailure"):
     if code != 404:
         LOG.debug(msg)
     return flask_error_response_json(msg, code=code, error_type=error_type)
+
+
+def generate_lambda_arn(account_id: int, region: str, fn_name: str, qualifier: Optional[str] = None):
+    if qualifier:
+        return f"arn:aws:lambda:{region}:{account_id}:function:{fn_name}:{qualifier}"
+    else:
+        return f"arn:aws:lambda:{region}:{account_id}:function:{fn_name}"
